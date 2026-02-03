@@ -10,10 +10,20 @@
     <color name="surface_light">#F5F5F5</color>
     <color name="card_light">#FAFAFA</color>
     
+    <!-- Legacy color names for compatibility -->
+    <color name="background_black">#FFFFFF</color>
+    <color name="surface_dark">#F5F5F5</color>
+    <color name="card_dark">#FAFAFA</color>
+    
     <!-- Text Colors -->
     <color name="text_primary">#212121</color>
     <color name="text_secondary">#757575</color>
     <color name="text_hint">#9E9E9E</color>
+    
+    <!-- Legacy text colors -->
+    <color name="text_white">#212121</color>
+    <color name="text_grey">#757575</color>
+    <color name="text_dim">#9E9E9E</color>
     
     <!-- Message Bubble Colors -->
     <color name="bubble_user">#1976D2</color>
