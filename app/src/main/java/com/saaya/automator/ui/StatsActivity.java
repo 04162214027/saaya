@@ -1,6 +1,7 @@
 package com.saaya.automator.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,8 +46,11 @@ public class StatsActivity extends AppCompatActivity {
         tvFavApp = findViewById(R.id.tvFavApp);
         logsRecyclerView = findViewById(R.id.logsRecyclerView);
 
-        // Null checks
-        if (logsRecyclerView == null) {
+        // Null checks for all views
+        if (tvTotalMessages == null || tvWritingStyle == null || 
+            tvPeakTime == null || tvFavApp == null || logsRecyclerView == null) {
+            Log.e("StatsActivity", "Error: One or more views not found");
+            finish();
             return;
         }
 

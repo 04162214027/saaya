@@ -89,27 +89,32 @@ public class SaayaMemoryDB extends SQLiteOpenHelper {
      */
     public List<LogEntry> getAllLogs() {
         List<LogEntry> logs = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
+        
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
 
-        String query = "SELECT * FROM " + TABLE_LOGS 
-                     + " ORDER BY " + COL_TIMESTAMP + " DESC LIMIT 100";
+            String query = "SELECT * FROM " + TABLE_LOGS 
+                         + " ORDER BY " + COL_TIMESTAMP + " DESC LIMIT 100";
 
-        Cursor cursor = db.rawQuery(query, null);
+            Cursor cursor = db.rawQuery(query, null);
 
-        if (cursor.moveToFirst()) {
-            do {
-                LogEntry entry = new LogEntry(
-                    cursor.getInt(0),
-                    cursor.getLong(1),
-                    cursor.getString(2),
-                    cursor.getString(3),
-                    cursor.getString(4)
-                );
-                logs.add(entry);
-            } while (cursor.moveToNext());
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    LogEntry entry = new LogEntry(
+                        cursor.getInt(0),
+                        cursor.getLong(1),
+                        cursor.getString(2),
+                        cursor.getString(3),
+                        cursor.getString(4)
+                    );
+                    logs.add(entry);
+                } while (cursor.moveToNext());
+                cursor.close();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error getting all logs: " + e.getMessage());
         }
 
-        cursor.close();
         return logs;
     }
 
@@ -147,51 +152,59 @@ public class SaayaMemoryDB extends SQLiteOpenHelper {
      */
     public Map<String, String> getPersonalityProfile() {
         Map<String, String> profile = new HashMap<>();
-        SQLiteDatabase db = this.getReadableDatabase();
+        
+        // Set defaults first
+        profile.put("totalMessages", "0");
+        profile.put("writingStyle", "N/A");
+        profile.put("avgWords", "0");
+        profile.put("peakTime", "N/A");
+        profile.put("favApp", "N/A");
+        
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
 
-        // Total messages
-        Cursor countCursor = db.rawQuery(
-            "SELECT COUNT(*) FROM " + TABLE_LOGS, null);
-        if (countCursor.moveToFirst()) {
-            profile.put("totalMessages", String.valueOf(countCursor.getInt(0)));
-        }
-        countCursor.close();
+            // Total messages
+            Cursor countCursor = db.rawQuery(
+                "SELECT COUNT(*) FROM " + TABLE_LOGS, null);
+            if (countCursor != null && countCursor.moveToFirst()) {
+                profile.put("totalMessages", String.valueOf(countCursor.getInt(0)));
+                countCursor.close();
+            }
 
-        // Average word count
-        Cursor avgCursor = db.rawQuery(
-            "SELECT AVG(LENGTH(" + COL_MESSAGE + ") - LENGTH(REPLACE(" + COL_MESSAGE + ", ' ', '')) + 1) "
-            + "FROM " + TABLE_LOGS + " WHERE " + COL_MESSAGE + " != ''", null);
-        if (avgCursor.moveToFirst()) {
-            int avgWords = avgCursor.getInt(0);
-            profile.put("writingStyle", avgWords > 10 ? "Detailed" : "Short");
-            profile.put("avgWords", String.valueOf(avgWords));
-        }
-        avgCursor.close();
+            // Average word count
+            Cursor avgCursor = db.rawQuery(
+                "SELECT AVG(LENGTH(" + COL_MESSAGE + ") - LENGTH(REPLACE(" + COL_MESSAGE + ", ' ', '')) + 1) "
+                + "FROM " + TABLE_LOGS + " WHERE " + COL_MESSAGE + " != ''", null);
+            if (avgCursor != null && avgCursor.moveToFirst()) {
+                int avgWords = avgCursor.getInt(0);
+                profile.put("writingStyle", avgWords > 10 ? "Detailed" : "Short");
+                profile.put("avgWords", String.valueOf(avgWords));
+                avgCursor.close();
+            }
 
-        // Peak activity hour
-        Cursor peakCursor = db.rawQuery(
-            "SELECT strftime('%H', " + COL_TIMESTAMP + "/1000, 'unixepoch', 'localtime') as hour, "
-            + "COUNT(*) as count FROM " + TABLE_LOGS
-            + " GROUP BY hour ORDER BY count DESC LIMIT 1", null);
-        if (peakCursor.moveToFirst()) {
-            String hour = peakCursor.getString(0);
-            profile.put("peakTime", hour + ":00");
-        } else {
-            profile.put("peakTime", "N/A");
-        }
-        peakCursor.close();
+            // Peak activity hour
+            Cursor peakCursor = db.rawQuery(
+                "SELECT strftime('%H', " + COL_TIMESTAMP + "/1000, 'unixepoch', 'localtime') as hour, "
+                + "COUNT(*) as count FROM " + TABLE_LOGS
+                + " GROUP BY hour ORDER BY count DESC LIMIT 1", null);
+            if (peakCursor != null && peakCursor.moveToFirst()) {
+                String hour = peakCursor.getString(0);
+                profile.put("peakTime", hour + ":00");
+                peakCursor.close();
+            }
 
-        // Favorite app
-        Cursor favCursor = db.rawQuery(
-            "SELECT " + COL_PACKAGE + ", COUNT(*) as count FROM " + TABLE_LOGS
-            + " GROUP BY " + COL_PACKAGE + " ORDER BY count DESC LIMIT 1", null);
-        if (favCursor.moveToFirst()) {
-            String favApp = getFriendlyAppName(favCursor.getString(0));
-            profile.put("favApp", favApp);
-        } else {
-            profile.put("favApp", "N/A");
+            // Favorite app
+            Cursor favCursor = db.rawQuery(
+                "SELECT " + COL_PACKAGE + ", COUNT(*) as count FROM " + TABLE_LOGS
+                + " GROUP BY " + COL_PACKAGE + " ORDER BY count DESC LIMIT 1", null);
+            if (favCursor != null && favCursor.moveToFirst()) {
+                String favApp = getFriendlyAppName(favCursor.getString(0));
+                profile.put("favApp", favApp);
+                favCursor.close();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error getting personality profile: " + e.getMessage());
         }
-        favCursor.close();
 
         return profile;
     }

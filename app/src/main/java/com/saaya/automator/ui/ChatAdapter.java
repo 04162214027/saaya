@@ -55,6 +55,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
         }
 
         void bind(MainActivity.ChatMessage message) {
+            if (message == null || message.text == null) {
+                return;
+            }
+            
             textView.setText(message.text);
             
             LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) container.getLayoutParams();

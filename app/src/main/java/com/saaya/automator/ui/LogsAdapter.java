@@ -60,11 +60,20 @@ public class LogsAdapter extends RecyclerView.Adapter<LogsAdapter.LogViewHolder>
         }
 
         void bind(SaayaMemoryDB.LogEntry log, SimpleDateFormat dateFormat) {
+            if (log == null) {
+                return;
+            }
+            
             tvTime.setText(dateFormat.format(new Date(log.timestamp)));
             tvApp.setText(getFriendlyAppName(log.packageName));
-            tvRecipient.setText("To: " + log.recipientName);
-            tvMessage.setText(log.messageText.length() > 50 ? 
-                            log.messageText.substring(0, 50) + "..." : log.messageText);
+            tvRecipient.setText("To: " + (log.recipientName != null ? log.recipientName : "Unknown"));
+            
+            String messagePreview = "";
+            if (log.messageText != null) {
+                messagePreview = log.messageText.length() > 50 ? 
+                                log.messageText.substring(0, 50) + "..." : log.messageText;
+            }
+            tvMessage.setText(messagePreview);
         }
 
         private String getFriendlyAppName(String packageName) {
