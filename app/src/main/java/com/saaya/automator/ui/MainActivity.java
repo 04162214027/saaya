@@ -3,6 +3,7 @@ package com.saaya.automator.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +26,7 @@ import java.util.List;
  */
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MainActivity";
     private RecyclerView recyclerView;
     private EditText inputField;
     private ImageButton sendButton;
@@ -34,43 +36,65 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        Log.d(TAG, "onCreate started");
+        
+        try {
+            setContentView(R.layout.activity_main);
+            Log.d(TAG, "setContentView successful");
 
-        // Set title
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Saaya");
-        }
-
-        // Initialize views
-        recyclerView = findViewById(R.id.chatRecyclerView);
-        inputField = findViewById(R.id.inputField);
-        sendButton = findViewById(R.id.sendButton);
-
-        // Null checks
-        if (recyclerView == null || inputField == null || sendButton == null) {
-            Toast.makeText(this, "Error: UI components not found", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        // Setup RecyclerView
-        messages = new ArrayList<>();
-        chatAdapter = new ChatAdapter(messages);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(chatAdapter);
-
-        // Add welcome message
-        addBotMessage("Assalam o Alaikum! Main Saaya hoon, aapka digital shadow. Main aapki messages observe kar ke seekhta rehta hoon.");
-
-        // Send button click
-        sendButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendMessage();
+            // Set title
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setTitle("Saaya");
             }
-        });
 
-        // Check accessibility
-        checkAccessibilityService();
+            // Initialize views
+            Log.d(TAG, "Finding views...");
+            recyclerView = findViewById(R.id.chatRecyclerView);
+            inputField = findViewById(R.id.inputField);
+            sendButton = findViewById(R.id.sendButton);
+            
+            Log.d(TAG, "RecyclerView: " + (recyclerView != null));
+            Log.d(TAG, "InputField: " + (inputField != null));
+            Log.d(TAG, "SendButton: " + (sendButton != null));
+
+            // Null checks
+            if (recyclerView == null || inputField == null || sendButton == null) {
+                Log.e(TAG, "ERROR: One or more views are null!");
+                Toast.makeText(this, "Error: UI components not found. Please reinstall app.", Toast.LENGTH_LONG).show();
+                finish();
+                return;
+            }
+
+            // Setup RecyclerView
+            Log.d(TAG, "Setting up RecyclerView...");
+            messages = new ArrayList<>();
+            chatAdapter = new ChatAdapter(messages);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setAdapter(chatAdapter);
+            Log.d(TAG, "RecyclerView setup complete");
+
+            // Add welcome message
+            addBotMessage("Assalam o Alaikum! Main Saaya hoon, aapka digital shadow. Main aapki messages observe kar ke seekhta rehta hoon.");
+
+            // Send button click
+            sendButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    sendMessage();
+                }
+            });
+
+            // Check accessibility
+            checkAccessibilityService();
+            
+            Log.d(TAG, "onCreate completed successfully");
+            
+        } catch (Exception e) {
+            Log.e(TAG, "FATAL ERROR in onCreate: " + e.getMessage(), e);
+            Toast.makeText(this, "Fatal Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+            finish();
+        }
     }
 
     private void sendMessage() {

@@ -3,6 +3,7 @@ package com.saaya.automator.ui;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +21,7 @@ import java.util.Map;
  */
 public class StatsActivity extends AppCompatActivity {
 
+    private static final String TAG = "StatsActivity";
     private TextView tvTotalMessages, tvWritingStyle, tvPeakTime, tvFavApp;
     private RecyclerView logsRecyclerView;
     private LogsAdapter logsAdapter;
@@ -28,38 +30,58 @@ public class StatsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_stats);
+        Log.d(TAG, "onCreate started");
+        
+        try {
+            setContentView(R.layout.activity_stats);
+            Log.d(TAG, "setContentView successful");
 
-        // Set title
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("Dashboard");
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+            // Set title
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setTitle("Dashboard");
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            }
 
-        // Initialize database
-        memoryDB = SaayaMemoryDB.getInstance(this);
+            // Initialize database
+            memoryDB = SaayaMemoryDB.getInstance(this);
+            Log.d(TAG, "Database initialized");
 
-        // Initialize views
-        tvTotalMessages = findViewById(R.id.tvTotalMessages);
-        tvWritingStyle = findViewById(R.id.tvWritingStyle);
-        tvPeakTime = findViewById(R.id.tvPeakTime);
-        tvFavApp = findViewById(R.id.tvFavApp);
-        logsRecyclerView = findViewById(R.id.logsRecyclerView);
+            // Initialize views
+            tvTotalMessages = findViewById(R.id.tvTotalMessages);
+            tvWritingStyle = findViewById(R.id.tvWritingStyle);
+            tvPeakTime = findViewById(R.id.tvPeakTime);
+            tvFavApp = findViewById(R.id.tvFavApp);
+            logsRecyclerView = findViewById(R.id.logsRecyclerView);
+            
+            Log.d(TAG, "Views found - TotalMsg: " + (tvTotalMessages != null) + 
+                       ", Style: " + (tvWritingStyle != null) +
+                       ", Peak: " + (tvPeakTime != null) +
+                       ", Fav: " + (tvFavApp != null) +
+                       ", RecyclerView: " + (logsRecyclerView != null));
 
-        // Null checks for all views
-        if (tvTotalMessages == null || tvWritingStyle == null || 
-            tvPeakTime == null || tvFavApp == null || logsRecyclerView == null) {
-            Log.e("StatsActivity", "Error: One or more views not found");
+            // Null checks for all views
+            if (tvTotalMessages == null || tvWritingStyle == null || 
+                tvPeakTime == null || tvFavApp == null || logsRecyclerView == null) {
+                Log.e(TAG, "Error: One or more views not found");
+                Toast.makeText(this, "Error loading dashboard", Toast.LENGTH_SHORT).show();
+                finish();
+                return;
+            }
+
+            // Setup RecyclerView
+            logsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+            // Load data
+            loadAnalytics();
+            loadLogs();
+            
+            Log.d(TAG, "onCreate completed successfully");
+            
+        } catch (Exception e) {
+            Log.e(TAG, "FATAL ERROR in onCreate: " + e.getMessage(), e);
+            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             finish();
-            return;
         }
-
-        // Setup RecyclerView
-        logsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        // Load data
-        loadAnalytics();
-        loadLogs();
     }
 
     private void loadAnalytics() {
