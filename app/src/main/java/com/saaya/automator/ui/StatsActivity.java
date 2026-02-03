@@ -45,6 +45,11 @@ public class StatsActivity extends AppCompatActivity {
         tvFavApp = findViewById(R.id.tvFavApp);
         logsRecyclerView = findViewById(R.id.logsRecyclerView);
 
+        // Null checks
+        if (logsRecyclerView == null) {
+            return;
+        }
+
         // Setup RecyclerView
         logsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 

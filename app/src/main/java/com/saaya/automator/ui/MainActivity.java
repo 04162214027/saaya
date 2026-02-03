@@ -46,6 +46,12 @@ public class MainActivity extends AppCompatActivity {
         inputField = findViewById(R.id.inputField);
         sendButton = findViewById(R.id.sendButton);
 
+        // Null checks
+        if (recyclerView == null || inputField == null || sendButton == null) {
+            Toast.makeText(this, "Error: UI components not found", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         // Setup RecyclerView
         messages = new ArrayList<>();
         chatAdapter = new ChatAdapter(messages);
