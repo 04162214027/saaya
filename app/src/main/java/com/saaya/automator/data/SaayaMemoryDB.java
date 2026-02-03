@@ -19,7 +19,7 @@ public class SaayaMemoryDB extends SQLiteOpenHelper {
 
     private static final String TAG = "SaayaMemoryDB";
     private static final String DATABASE_NAME = "saaya_brain.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     // Table: shadow_logs
     private static final String TABLE_LOGS = "shadow_logs";
@@ -28,6 +28,12 @@ public class SaayaMemoryDB extends SQLiteOpenHelper {
     private static final String COL_PACKAGE = "package_name";
     private static final String COL_RECIPIENT = "recipient_name";
     private static final String COL_MESSAGE = "message_text";
+
+    // Table: user_identity
+    private static final String TABLE_IDENTITY = "user_identity";
+    private static final String COL_IDENTITY_ID = "id";
+    private static final String COL_NAME = "name";
+    private static final String COL_ROLE = "role";
 
     private static SaayaMemoryDB instance;
 
@@ -44,7 +50,8 @@ public class SaayaMemoryDB extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_TABLE = "CREATE TABLE " + TABLE_LOGS + " ("
+        // Create logs table
+        String CREATE_LOGS_TABLE = "CREATE TABLE " + TABLE_LOGS + " ("
                 + COL_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + COL_TIMESTAMP + " INTEGER NOT NULL, "
                 + COL_PACKAGE + " TEXT NOT NULL, "
@@ -52,8 +59,56 @@ public class SaayaMemoryDB extends SQLiteOpenHelper {
                 + COL_MESSAGE + " TEXT"
                 + ")";
         
-        db.execSQL(CREATE_TABLE);
-        Log.d(TAG, "Database created successfully");
+        // Create identity table
+        String CREATE_IDENTITY_TABLE = "CREATE TABLE " + TABLE_IDENTITY + " ("
+                + COL_IDENTITY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + COL_NAME + " TEXT NOT NULL, "
+                + COL_ROLE + " TEXT NOT NULL"
+                + ")";
+        
+        db.execSQL(CREATE_LOGS_TABLE);
+        db.execSQL(CREATE_IDENTITY_TABLE);
+        
+        // Initialize with owner identity
+        initializeIdentity(db);
+        
+        Log.d(TAG, "Database created successfully with identity");
+    }
+
+    /**
+     * Initialize user identity with default values
+     */
+    private void initializeIdentity(SQLiteDatabase db) {
+        ContentValues values = new ContentValues();
+        values.put(COL_NAME, "Waqar");
+        values.put(COL_ROLE, "Java Expert & Owner");
+        
+        long result = db.insert(TABLE_IDENTITY, null, values);
+        Log.d(TAG, "Identity initialized: " + (result != -1));
+    }
+
+    /**
+     * Get user identity
+     */
+    public Map<String, String> getUserIdentity() {
+        Map<String, String> identity = new HashMap<>();
+        identity.put("name", "Waqar");
+        identity.put("role", "Java Expert & Owner");
+        
+        try {
+            SQLiteDatabase db = this.getReadableDatabase();
+            Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_IDENTITY + " LIMIT 1", null);
+            
+            if (cursor != null && cursor.moveToFirst()) {
+                identity.put("name", cursor.getString(cursor.getColumnIndex(COL_NAME)));
+                identity.put("role", cursor.getString(cursor.getColumnIndex(COL_ROLE)));
+                cursor.close();
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Error getting identity: " + e.getMessage());
+        }
+        
+        return identity;
     }
 
     @Override

@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Professional Dark Theme -->
-    <color name="primary">#2196F3</color>
-    <color name="primary_dark">#1976D2</color>
-    <color name="accent">#03DAC6</color>
+    <!-- Professional Light Theme -->
+    <color name="primary">#1976D2</color>
+    <color name="primary_dark">#1565C0</color>
+    <color name="accent">#2196F3</color>
     
     <!-- Background Colors -->
-    <color name="background_black">#121212</color>
-    <color name="surface_dark">#1E1E1E</color>
-    <color name="card_dark">#2C2C2C</color>
+    <color name="background_white">#FFFFFF</color>
+    <color name="surface_light">#F5F5F5</color>
+    <color name="card_light">#FAFAFA</color>
     
     <!-- Text Colors -->
-    <color name="text_white">#FFFFFF</color>
-    <color name="text_grey">#B0B0B0</color>
-    <color name="text_dim">#808080</color>
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="text_hint">#9E9E9E</color>
     
     <!-- Message Bubble Colors -->
-    <color name="bubble_user">#2196F3</color>
-    <color name="bubble_bot">#1E1E1E</color>
+    <color name="bubble_user">#1976D2</color>
+    <color name="bubble_bot">#F5F5F5</color>
     
     <!-- Status Colors -->
     <color name="success">#4CAF50</color>
@@ -27,4 +27,5 @@
     <!-- System Colors -->
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="divider">#E0E0E0</color>
 </resources>

@@ -1,35 +1,38 @@
 package com.saaya.automator.ui;
 
 import android.content.Intent;
-import android.os.Bundle;
+import android:os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
+import android:util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.saaya.automator.R;
 import com.saaya.automator.core.SaayaService;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
- * MainActivity - Chat Interface
+ * MainActivity - Chat Interface with Professional White Theme
  */
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private RecyclerView recyclerView;
     private EditText inputField;
-    private ImageButton sendButton;
+    private FloatingActionButton sendButton;
+    private TextView tvGreeting;
     private ChatAdapter chatAdapter;
     private List<ChatMessage> messages;
 
@@ -42,28 +45,28 @@ public class MainActivity extends AppCompatActivity {
             setContentView(R.layout.activity_main);
             Log.d(TAG, "setContentView successful");
 
-            // Set title
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().setTitle("Saaya");
-            }
-
             // Initialize views
             Log.d(TAG, "Finding views...");
+            tvGreeting = findViewById(R.id.tvGreeting);
             recyclerView = findViewById(R.id.chatRecyclerView);
             inputField = findViewById(R.id.inputField);
             sendButton = findViewById(R.id.sendButton);
             
+            Log.d(TAG, "Greeting: " + (tvGreeting != null));
             Log.d(TAG, "RecyclerView: " + (recyclerView != null));
             Log.d(TAG, "InputField: " + (inputField != null));
             Log.d(TAG, "SendButton: " + (sendButton != null));
 
             // Null checks
-            if (recyclerView == null || inputField == null || sendButton == null) {
+            if (recyclerView == null || inputField == null || sendButton == null || tvGreeting == null) {
                 Log.e(TAG, "ERROR: One or more views are null!");
                 Toast.makeText(this, "Error: UI components not found. Please reinstall app.", Toast.LENGTH_LONG).show();
                 finish();
                 return;
             }
+
+            // Set time-based greeting
+            setGreeting();
 
             // Setup RecyclerView
             Log.d(TAG, "Setting up RecyclerView...");
@@ -74,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "RecyclerView setup complete");
 
             // Add welcome message
-            addBotMessage("Assalam o Alaikum! Main Saaya hoon, aapka digital shadow. Main aapki messages observe kar ke seekhta rehta hoon.");
+            addBotMessage("Welcome back! I'm Saaya, your personal productivity assistant. How can I help you today?");
 
             // Send button click
             sendButton.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +98,22 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
             finish();
         }
+    }
+
+    private void setGreeting() {
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        
+        String greeting;
+        if (hour < 12) {
+            greeting = "Good Morning, Waqar";
+        } else if (hour < 17) {
+            greeting = "Good Afternoon, Waqar";
+        } else {
+            greeting = "Good Evening, Waqar";
+        }
+        
+        tvGreeting.setText(greeting);
     }
 
     private void sendMessage() {

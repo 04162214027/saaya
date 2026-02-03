@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background_black"
+    android:background="@color/background_white"
     android:fillViewport="true">
 
     <LinearLayout
@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            app:cardBackgroundColor="@color/surface_dark"
+            app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="12dp"
             app:cardElevation="4dp">
 
@@ -31,7 +31,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="User Profile"
-                    android:textColor="@color/text_white"
+                    android:textColor="@color/text_primary"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="16dp" />
@@ -41,7 +41,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Total Messages: 0"
-                    android:textColor="@color/text_grey"
+                    android:textColor="@color/text_secondary"
                     android:textSize="14sp"
                     android:layout_marginBottom="8dp" />
 
@@ -50,7 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Writing Style: N/A"
-                    android:textColor="@color/text_grey"
+                    android:textColor="@color/text_secondary"
                     android:textSize="14sp"
                     android:layout_marginBottom="8dp" />
 
@@ -59,7 +59,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Peak Time: N/A"
-                    android:textColor="@color/text_grey"
+                    android:textColor="@color/text_secondary"
                     android:textSize="14sp"
                     android:layout_marginBottom="8dp" />
 
@@ -68,7 +68,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Favorite App: N/A"
-                    android:textColor="@color/text_grey"
+                    android:textColor="@color/text_secondary"
                     android:textSize="14sp" />
 
             </LinearLayout>
@@ -80,7 +80,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Message History"
-            android:textColor="@color/text_white"
+            android:textColor="@color/text_primary"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginBottom="12dp" />

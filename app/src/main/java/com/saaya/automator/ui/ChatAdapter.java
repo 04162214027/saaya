@@ -66,13 +66,15 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
                 (android.widget.FrameLayout.LayoutParams) container.getLayoutParams();
             
             if (message.isUser) {
-                // User message (right side, blue)
+                // User message (right side, blue background, white text)
                 params.gravity = Gravity.END;
                 container.setBackgroundResource(R.drawable.bg_message_user);
+                textView.setTextColor(0xFFFFFFFF); // White text for user messages
             } else {
-                // Bot message (left side, dark grey)
+                // Bot message (left side, light grey background, dark text)
                 params.gravity = Gravity.START;
                 container.setBackgroundResource(R.drawable.bg_message_bot);
+                textView.setTextColor(0xFF212121); // Dark text for bot messages
             }
             
             container.setLayoutParams(params);

@@ -1,9 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/background_black">
+    android:background="@color/background_white">
+
+    <!-- Header Card -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:cardBackgroundColor="@color/primary"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/tvGreeting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Good Morning, Waqar"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Java Expert &amp; Owner"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:layout_marginTop="4dp"
+                android:alpha="0.9" />
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
     <!-- Chat RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
@@ -19,9 +57,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background="@color/surface_dark"
-        android:padding="8dp"
-        android:elevation="4dp">
+        android:background="@color/surface_light"
+        android:padding="12dp"
+        android:elevation="8dp">
 
         <EditText
             android:id="@+id/inputField"
@@ -29,19 +67,21 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="Type a message..."
-            android:textColor="@color/text_white"
-            android:textColorHint="@color/text_grey"
-            android:background="@android:color/transparent"
-            android:padding="12dp"
-            android:maxLines="4" />
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_hint"
+            android:background="@color/white"
+            android:padding="14dp"
+            android:maxLines="4"
+            android:layout_marginEnd="8dp" />
 
-        <ImageButton
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/sendButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:src="@android:drawable/ic_menu_send"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:tint="@color/primary"
+            app:tint="@color/white"
+            app:backgroundTint="@color/primary"
+            app:fabSize="normal"
             android:contentDescription="Send" />
 
     </LinearLayout>
