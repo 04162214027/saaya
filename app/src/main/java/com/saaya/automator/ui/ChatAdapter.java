@@ -61,7 +61,9 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MessageViewHol
             
             textView.setText(message.text);
             
-            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) container.getLayoutParams();
+            // Use FrameLayout.LayoutParams instead of LinearLayout.LayoutParams
+            android.widget.FrameLayout.LayoutParams params = 
+                (android.widget.FrameLayout.LayoutParams) container.getLayoutParams();
             
             if (message.isUser) {
                 // User message (right side, blue)
