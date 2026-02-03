@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Saaya</string>
+    <string name="app_subtitle">Your Digital Shadow</string>
+    <string name="service_name">Saaya Shadow Service</string>
+    <string name="service_description">Saaya - Your Digital Shadow. Learns from your patterns to automate tasks intelligently.</string>
+    
+    <!-- Status Messages -->
+    <string name="status_waiting">Status: Waiting...</string>
+    <string name="status_active">Shadow is Active</string>
+    <string name="status_inactive">Shadow is Inactive</string>
+    <string name="permissions_required">Permissions Required</string>
+    
+    <!-- UI Labels -->
+    <string name="permissions_title">Required Permissions</string>
+    <string name="grant_access">Grant Access</string>
+    <string name="granted">✓ Granted</string>
+    
+    <!-- Privacy Notice -->
+    <string name="privacy_notice">🔒 Privacy First: Saaya runs 100% locally. Password fields are never recorded. All data stays on your device.</string>
+    
+    <!-- Descriptions -->
+    <string name="accessibility_desc">Required to observe screen content and learn patterns</string>
+    <string name="overlay_desc">Required for overlay features and visual feedback</string>
+    <string name="usage_desc">Required to track app usage patterns</string>
+</resources>
